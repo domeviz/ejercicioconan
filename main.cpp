@@ -84,6 +84,18 @@ std::shared_ptr<sf::Uint8 >createTexture(){
 
 int main() {
     sf::RenderWindow window(sf::VideoMode(IMAGE_WIDTH, IMAGE_HEIGHT), "My window");
+
+    sf::Text text;
+    sf::Font font;
+    {
+        font.loadFromFile("arial.ttf");
+        text.setFont(font);
+        text.setCharacterSize(30);
+        text.setFillColor(sf::Color::White);
+        text.setStyle(sf::Text::Bold);
+        text.setPosition(10,10);
+    };
+
     auto pixels=createTexture();
     sf::Texture texture;
     texture.create(IMAGE_WIDTH,IMAGE_HEIGHT);
@@ -91,6 +103,10 @@ int main() {
 
     sf::Sprite sprite;
     sprite.setTexture(texture);
+
+    int frames=0;
+    int fps=0;
+    sf::Clock clockFrames;
 
     while (window.isOpen())
     {
@@ -106,9 +122,22 @@ int main() {
         {
             pixels=createTexture();
             texture.update(pixels.get());
+
+            auto msg =fmt::format("Mode={}, Iteraciones={}, FPS={}","CPU", MAXITER,fps);
+            text.setString(msg);
         }
+
+        if(clockFrames.getElapsedTime().asSeconds()>=1.0){
+            fps=frames;
+            frames=0;
+            clockFrames.restart();
+        }
+
+        frames++;
+
         window.clear(sf::Color::Black);
         window.draw(sprite);
+        window.draw(text);
         window.display();
     }
     return 0;
