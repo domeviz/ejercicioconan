@@ -13,6 +13,24 @@ static const double y_end=1;
 static int MAXITER=1000;
 
 int diverge(double cx,double cy){
+    std::vector<unsigned int> colors_ramp = {
+            0x000003FF,
+            0x000003FF,
+            0x0B0726FF,
+            0x240B4EFF,
+            0x410967FF,
+            0x5D126EFF,
+            0x781C6DFF,
+            0x932567FF,
+            0xAE305BFF,
+            0xC73E4CFF,
+            0xDC5039FF,
+            0xED6825FF,
+            0xF7850EFF,
+            0xFBA40AFF,
+            0xF9C52CFF,
+            0xF2E660FF,
+    };
     int iter=0;
     double vx=cx;
     double vy=cy;
@@ -25,7 +43,7 @@ int diverge(double cx,double cy){
         iter++;
     }
     if(iter>0 && iter<MAXITER){
-        return 0xFFFFFF;
+        return colors_ramp[iter%16];
     }
     else{
         return 0xde4c8a;
